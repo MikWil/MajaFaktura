@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\applogo.ico</ApplicationIcon>
+    <AssemblyTitle>MajaFaktura</AssemblyTitle>
+    <Product>MajaFaktura</Product>
+    <Description>Invoice creator application</Description>
+    <Version>1.6.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\company_logo.png" />
+    <Resource Include="Assets\company_logo_cropped.png" />
+    <Resource Include="Assets\applogo.png" />
+  </ItemGroup>
+
+</Project>

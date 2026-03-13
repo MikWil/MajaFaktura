@@ -1,0 +1,288 @@
+<UserControl x:Class="MajaFaktura.InvoicePrintView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="White" Width="780">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="GreenBorder" Color="#9BBB59"/>
+        <SolidColorBrush x:Key="NavyText" Color="#17365D"/>
+        <Style x:Key="CellText" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Calibri"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="6,4"/>
+        </Style>
+        <Style x:Key="HeaderCell" TargetType="TextBlock" BasedOn="{StaticResource CellText}">
+            <Setter Property="FontFamily" Value="Cambria"/>
+            <Setter Property="Foreground" Value="{StaticResource NavyText}"/>
+            <Setter Property="FontSize" Value="11"/>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel Margin="40,30">
+
+        <!-- Company Logo -->
+        <Image Source="/Assets/company_logo_cropped.png" Height="80" HorizontalAlignment="Left" Margin="0,0,0,16"
+               RenderOptions.BitmapScalingMode="HighQuality"/>
+
+        <!-- Header: Faktura + Nr -->
+        <Border BorderBrush="{StaticResource GreenBorder}" BorderThickness="2" Padding="12,8">
+            <Grid>
+                <TextBlock Text="Faktura" FontFamily="Cambria" FontSize="26"
+                           Foreground="{StaticResource NavyText}" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="Nr:" FontFamily="Cambria" FontSize="17"
+                               Foreground="{StaticResource NavyText}"/>
+                    <TextBlock Text="{Binding InvoiceNumber}" FontFamily="Cambria" FontSize="17"
+                               Foreground="{StaticResource NavyText}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Dates -->
+        <Grid Margin="4,12,4,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <TextBlock Text="Fakturadatum" FontFamily="Calibri" FontSize="13" FontWeight="SemiBold"/>
+                <TextBlock Text=":" FontFamily="Calibri" FontSize="12"/>
+                <TextBlock Text="{Binding InvoiceDate, StringFormat=yyyy.MM.dd}" FontFamily="Calibri" FontSize="12" Margin="2,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+                <TextBlock Text="Förfallodatum" FontFamily="Calibri" FontSize="13" FontWeight="SemiBold"/>
+                <TextBlock Text=":" FontFamily="Calibri" FontSize="12"/>
+                <TextBlock Text="{Binding DueDate, StringFormat=yyyy.MM.dd}" FontFamily="Calibri" FontSize="12" Margin="2,0,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Customer Details -->
+        <Border BorderBrush="{StaticResource GreenBorder}" BorderThickness="2" 
+                Width="300" HorizontalAlignment="Left" Margin="0,0,0,4">
+            <StackPanel>
+                <Border BorderBrush="{StaticResource GreenBorder}" BorderThickness="0,0,0,2" Padding="10,6">
+                    <TextBlock Text="Kunduppgifter" FontFamily="Cambria" FontSize="15"
+                               Foreground="{StaticResource NavyText}"/>
+                </Border>
+                <StackPanel Margin="10,8">
+                    <StackPanel Orientation="Horizontal" Margin="0,1">
+                        <TextBlock Text="Namn: " FontFamily="Calibri" FontSize="12"/>
+                        <TextBlock Text="{Binding CustomerName}" FontFamily="Calibri" FontSize="12"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,1">
+                        <TextBlock Text="Adress: " FontFamily="Calibri" FontSize="12"/>
+                        <TextBlock Text="{Binding CustomerAddress}" FontFamily="Calibri" FontSize="12"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,1">
+                        <TextBlock Text="Postnummer/Ort: " FontFamily="Calibri" FontSize="12"/>
+                        <TextBlock Text="{Binding CustomerPostalCity}" FontFamily="Calibri" FontSize="12"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,1">
+                        <TextBlock Text="Prs.nr: " FontFamily="Calibri" FontSize="12"/>
+                        <TextBlock Text="{Binding CustomerPersonalNumber}" FontFamily="Calibri" FontSize="12"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- Reference & Late Interest -->
+        <Grid Margin="4,10,4,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <TextBlock Text="Referens" FontFamily="Calibri" FontSize="13" FontWeight="SemiBold"/>
+                <TextBlock Text=":" FontFamily="Calibri" FontSize="12"/>
+                <TextBlock Text="{Binding Reference}" FontFamily="Calibri" FontSize="12" Margin="2,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+                <TextBlock Text="Dröjsmålsränta:" FontFamily="Calibri" FontSize="12" Margin="0,0,8,0"/>
+                <TextBlock Text="{Binding LateInterestRate, StringFormat={}{0}%}" FontFamily="Calibri" FontSize="12"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Items Table -->
+        <Border BorderBrush="{StaticResource GreenBorder}" BorderThickness="2" Margin="0,0,0,14">
+            <StackPanel>
+                <!-- Table Header -->
+                <Border BorderBrush="{StaticResource GreenBorder}" BorderThickness="0,0,0,2"
+                        Background="#F8FBF4">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="1.2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Tjänst" Style="{StaticResource HeaderCell}"/>
+                        <TextBlock Grid.Column="1" Text="Pris exkl. moms" Style="{StaticResource HeaderCell}" TextAlignment="Right"/>
+                        <TextBlock Grid.Column="2" Text="Timmar" Style="{StaticResource HeaderCell}" TextAlignment="Center"/>
+                        <TextBlock Grid.Column="3" Text="Momssats" Style="{StaticResource HeaderCell}" TextAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Item Rows -->
+                <ItemsControl ItemsSource="{Binding Items}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="{StaticResource GreenBorder}" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="3*"/>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1.5*"/>
+                                        <ColumnDefinition Width="1.2*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Service}" Style="{StaticResource CellText}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding PriceExclVat, StringFormat=N0}" Style="{StaticResource CellText}" TextAlignment="Right"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Hours}" Style="{StaticResource CellText}" TextAlignment="Center"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding VatRate, StringFormat={}{0}%}" Style="{StaticResource CellText}" TextAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- RUT-avdrag Row -->
+                <Border BorderBrush="{StaticResource GreenBorder}" BorderThickness="0,0,0,2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="1.2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="RUT-avdrag" Style="{StaticResource CellText}"/>
+                        <TextBlock Grid.Column="1" Text="{Binding RutDeduction, StringFormat=- {0:N0}}" Style="{StaticResource CellText}" TextAlignment="Right"/>
+                        <TextBlock Grid.Column="2" Style="{StaticResource CellText}"/>
+                        <TextBlock Grid.Column="3" Text="{Binding VatDisplayRate, StringFormat={}{0}%}" Style="{StaticResource CellText}" TextAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Att Betala Row -->
+                <Border Background="#F8FBF4">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="1.2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Att Betala" Style="{StaticResource HeaderCell}" FontWeight="Bold" FontSize="13"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="{Binding GrandTotal, StringFormat=N0}" FontFamily="Cambria" FontSize="14"
+                                       Foreground="{StaticResource NavyText}" FontWeight="Bold" Padding="6,4"/>
+                            <TextBlock Text=" kr" FontFamily="Cambria" FontSize="14"
+                                       Foreground="{StaticResource NavyText}" FontWeight="Bold" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </Border>
+
+        <!-- Momsspecifikation -->
+        <TextBlock Text="Momsspecifikation" FontFamily="Cambria" FontSize="13"
+                   Foreground="{StaticResource NavyText}" Margin="0,0,0,4"/>
+
+        <Border BorderBrush="{StaticResource GreenBorder}" BorderThickness="2" Margin="0,0,0,20">
+            <StackPanel>
+                <!-- VAT Table Header -->
+                <Border BorderBrush="{StaticResource GreenBorder}" BorderThickness="0,0,0,2"
+                        Background="#F8FBF4">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Moms" Style="{StaticResource HeaderCell}" TextAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="Pris exkl. moms" Style="{StaticResource HeaderCell}" TextAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="Moms i kr." Style="{StaticResource HeaderCell}" TextAlignment="Center"/>
+                        <TextBlock Grid.Column="3" Text="Öresavrundning" Style="{StaticResource HeaderCell}" TextAlignment="Center"/>
+                        <TextBlock Grid.Column="4" Text="Summa" Style="{StaticResource HeaderCell}" TextAlignment="Center"/>
+                    </Grid>
+                </Border>
+                <!-- VAT Data Row -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding VatDisplayRate, StringFormat={}{0}%}" Style="{StaticResource CellText}" TextAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding NetAfterDeduction, StringFormat=N0}" Style="{StaticResource CellText}" TextAlignment="Center"/>
+                    <TextBlock Grid.Column="2" Text="{Binding TotalVatAmount, StringFormat=N0}" Style="{StaticResource CellText}" TextAlignment="Center"/>
+                    <TextBlock Grid.Column="3" Text="{Binding Rounding, StringFormat=N2}" Style="{StaticResource CellText}" TextAlignment="Center"/>
+                    <TextBlock Grid.Column="4" Text="{Binding GrandTotal, StringFormat=N0}" Style="{StaticResource CellText}" TextAlignment="Center" FontWeight="Bold"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Footer: Company Info -->
+        <Border BorderBrush="{StaticResource GreenBorder}" BorderThickness="2">
+            <StackPanel>
+                <!-- Footer Header -->
+                <Border BorderBrush="{StaticResource GreenBorder}" BorderThickness="0,0,0,2"
+                        Background="#F8FBF4">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.3*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Godkänd för F-skatt" Style="{StaticResource HeaderCell}" FontSize="9" TextAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="Adressuppgifter" Style="{StaticResource HeaderCell}" FontSize="9" TextAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="Telefon" Style="{StaticResource HeaderCell}" FontSize="9" TextAlignment="Center"/>
+                        <TextBlock Grid.Column="3" Text="E-post/hemsida" Style="{StaticResource HeaderCell}" FontSize="9" TextAlignment="Center"/>
+                        <StackPanel Grid.Column="4" HorizontalAlignment="Center">
+                            <TextBlock Text="Momsreg.nr" Style="{StaticResource HeaderCell}" FontSize="9" TextAlignment="Center" Padding="0"/>
+                            <TextBlock FontFamily="Cambria" FontSize="9" Foreground="{StaticResource NavyText}" TextAlignment="Center">
+                                <Run Text="Bankkonto   ("/>
+                                <Run Text="{Binding CompanyBankName, Mode=OneWay}"/>
+                                <Run Text=")"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <!-- Footer Data -->
+                <Grid MinHeight="60">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.3*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Style="{StaticResource CellText}" TextAlignment="Center"/>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="6,4">
+                        <TextBlock Text="{Binding CompanyName}" FontFamily="Calibri" FontSize="10" TextAlignment="Center"/>
+                        <TextBlock Text="{Binding CompanyAddress}" FontFamily="Calibri" FontSize="10" TextAlignment="Center"/>
+                        <TextBlock Text="{Binding CompanyPostalCity}" FontFamily="Calibri" FontSize="10" TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="2" Text="{Binding CompanyPhone}" FontFamily="Calibri" FontSize="10"
+                               VerticalAlignment="Center" TextAlignment="Center" Padding="4"/>
+
+                    <TextBlock Grid.Column="3" Text="{Binding CompanyEmail}" FontFamily="Calibri" FontSize="10"
+                               VerticalAlignment="Center" TextAlignment="Center" Padding="4"/>
+
+                    <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="6,4">
+                        <TextBlock Text="{Binding CompanyVatNumber}" FontFamily="Calibri" FontSize="10" TextAlignment="Center"/>
+                        <TextBlock Text="{Binding CompanyBankInfo}" FontFamily="Calibri" FontSize="10" TextAlignment="Center" FontWeight="Bold"/>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+    </StackPanel>
+</UserControl>
