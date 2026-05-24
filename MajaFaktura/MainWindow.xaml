@@ -227,7 +227,7 @@
             </Border.Effect>
             <Grid>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Image Source="Assets/company_logo_cropped.png" Height="48" Margin="0,0,12,0"
+                    <Image Source="Assets/company_logo_cropped.png" Height="100" Margin="0,0,12,0"
                            RenderOptions.BitmapScalingMode="HighQuality"/>
                     <TextBlock Text="|" FontFamily="Segoe UI" FontSize="20" Foreground="#D0D5DD"
                                VerticalAlignment="Center" Margin="0,0,12,0"/>

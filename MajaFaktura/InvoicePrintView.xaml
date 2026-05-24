@@ -22,7 +22,7 @@
     <StackPanel Margin="40,30">
 
         <!-- Company Logo -->
-        <Image Source="/Assets/company_logo_cropped.png" Height="80" HorizontalAlignment="Left" Margin="0,0,0,16"
+        <Image Source="/Assets/company_logo_cropped.png" Height="160" HorizontalAlignment="Left" Margin="0,0,0,16"
                RenderOptions.BitmapScalingMode="HighQuality"/>
 
         <!-- Header: Faktura + Nr -->
