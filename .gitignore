@@ -26,6 +26,9 @@ bld/
 *.wixpdb
 *.wixobj
 
+## Code signing (local only, never commit)
+*.pfx
+
 ## OS files
 Thumbs.db
 ehthumbs.db
