@@ -1,7 +1,7 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
 
   <Package Name="MajaFaktura"
-           Version="1.6.0.0"
+           Version="1.7.0.0"
            Manufacturer="Maria Padyasek"
            UpgradeCode="E2A87C04-10AC-4C25-992E-F50D186D8587"
            InstallerVersion="500"

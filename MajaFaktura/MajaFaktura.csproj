@@ -10,7 +10,7 @@
     <AssemblyTitle>MajaFaktura</AssemblyTitle>
     <Product>MajaFaktura</Product>
     <Description>Invoice creator application</Description>
-    <Version>1.6.0</Version>
+    <Version>1.7.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
